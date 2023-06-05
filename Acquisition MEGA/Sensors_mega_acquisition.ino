@@ -1,0 +1,47 @@
+#include <ArduinoJson.h>
+#include "DFRobot_PH.h"
+#include <EEPROM.h>
+#include "DFRobot_EC10.h"
+#include <OneWire.h>
+
+#define VOLTAGE 5.00  //system voltage
+#define OFFSET -530   //zero drift voltage
+#define LED 13        //operating instructions
+
+#define EC_PIN A4
+#define ArrayLenth 40  //times of collection
+#define orpPin A0      //orp meter output,connect to Arduino controller ADC pin
+#define PH_PIN A1
+#define Turbidity_PIN A2
+#define TdsSensorPin A3
+
+void setup() {
+ 
+  Serial.begin(115200);
+  while (!Serial) continue;
+
+  Serial2.begin(9600);
+}
+ 
+void loop() {
+ 
+
+  // Create the JSON document
+  StaticJsonDocument<200> doc;
+  doc["temp"] = 23.5;
+  doc["TDS"] = 44.5;
+  doc["pH"] = 64.5;
+  doc["EC"] = 67.5;
+  doc["ORP"] = 13.5;
+  doc["DO"] = 98.5;
+
+
+
+  
+
+  // Send the JSON document over the "link" serial port
+  serializeJson(doc, Serial2);
+
+  // Wait
+  delay(5000);
+}
